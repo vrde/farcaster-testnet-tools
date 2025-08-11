@@ -11,10 +11,10 @@ import {
   Stack,
   Menu,
   MenuItem,
-  Link,
   Alert,
 } from "@mui/material";
 import { Contacts, OpenInNew } from "@mui/icons-material";
+import { ExternalLink } from "./ExternalLink";
 
 export function SendCard() {
   const { address } = useAccount();
@@ -171,10 +171,8 @@ export function SendCard() {
               severity="success"
               variant="filled"
               action={
-                <Link
+                <ExternalLink
                   href={getBlockExplorerUrl(successTxHash)}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   sx={{
                     color: "success.contrastText",
                     display: "flex",
@@ -184,8 +182,9 @@ export function SendCard() {
                     "&:hover": { textDecoration: "underline" },
                   }}
                 >
+                  View on BaseScan
                   <OpenInNew fontSize="small" />
-                </Link>
+                </ExternalLink>
               }
             >
               Transaction sent successfully!

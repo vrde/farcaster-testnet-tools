@@ -3,9 +3,9 @@ import {
   Button,
   Card,
   CardContent,
-  Link,
 } from "@mui/material";
 import { OpenInNew } from "@mui/icons-material";
+import { ExternalLink } from "./ExternalLink";
 
 export function FaucetCard() {
   return (
@@ -17,18 +17,22 @@ export function FaucetCard() {
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           Get free testnet ETH from the FarFaucet Mini App
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          component={Link}
-          href="https://farcaster.xyz/miniapps/nyF7y2CY0YRO/farfaucet"
-          target="_blank"
-          rel="noopener noreferrer"
-          startIcon={<OpenInNew />}
-        >
-          Open FarFaucet
-        </Button>
+        <ExternalLink href="https://farcaster.xyz/miniapps/nyF7y2CY0YRO/farfaucet">
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            startIcon={<OpenInNew />}
+            sx={{
+              textTransform: "none",
+              "&:hover": {
+                textDecoration: "none",
+              },
+            }}
+          >
+            Open FarFaucet
+          </Button>
+        </ExternalLink>
       </CardContent>
     </Card>
   );
