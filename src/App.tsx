@@ -2,7 +2,25 @@ import { sdk } from "@farcaster/frame-sdk";
 import { useEffect, useState } from "react";
 import { parseEther } from "viem";
 import { useAccount, useBalance, useConnect, useSendTransaction } from "wagmi";
-import "./App.css";
+import { 
+  Box, 
+  Container, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  Avatar, 
+  TextField, 
+  Select, 
+  MenuItem, 
+  FormControl, 
+  InputLabel, 
+  IconButton,
+  Link,
+  Stack,
+  Chip
+} from "@mui/material";
+import { ContentCopy, OpenInNew } from "@mui/icons-material";
 
 type UserProfile = {
   fid: number;
@@ -18,11 +36,15 @@ function App() {
   }, []);
 
   return (
-    <div className="app">
-      <h1 className="title">Testnet Tools</h1>
-      <ConnectMenu />
-      <EndpointCard />
-    </div>
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Typography variant="h4" component="h1" textAlign="center" sx={{ mb: 4 }}>
+        Testnet Tools
+      </Typography>
+      <Stack spacing={3}>
+        <ConnectMenu />
+        <EndpointCard />
+      </Stack>
+    </Container>
   );
 }
 
@@ -35,9 +57,15 @@ function ConnectMenu() {
   }
 
   return (
-    <button type="button" className="connect-button" onClick={() => connect({ connector: connectors[0] })}>
+    <Button 
+      variant="contained" 
+      size="large" 
+      fullWidth 
+      onClick={() => connect({ connector: connectors[0] })}
+      sx={{ py: 2 }}
+    >
       Connect Wallet
-    </button>
+    </Button>
   );
 }
 
@@ -60,10 +88,10 @@ function ConnectedView() {
   }, []);
 
   return (
-    <>
+    <Stack spacing={3}>
       <UserProfileCard profile={userProfile} address={address} />
       <SendCard />
-    </>
+    </Stack>
   );
 }
 
@@ -77,49 +105,83 @@ function UserProfileCard({ profile, address }: { profile: UserProfile | null; ad
   const basescanUrl = `https://sepolia.basescan.org/address/${address}`;
 
   return (
-    <div className="card">
-      <div className="user-profile">
-        {!profile ? (
-          <>
-            <div className="user-avatar" />
-            <div className="user-info">
-              <p className="user-name">Loading...</p>
-              <p className="user-fid">FID: -</p>
-            </div>
-          </>
-        ) : (
-          <>
-            <img
-              src={profile.pfpUrl || "/default-avatar.png"}
-              alt="User avatar"
-              className="user-avatar"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQ4IiBoZWlnaHQ9IjQ4IiByeD0iMjQiIGZpbGw9IiNkZGQiLz4KPHN2ZyB4PSIxMiIgeT0iMTIiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIj4KICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjgiIHI9IjMiIGZpbGw9IiM5OTkiLz4KICA8cGF0aCBkPSJtNiAyMWMwLTMuMzEgMi42OS02IDYtNnM2IDIuNjkgNiA2IiBmaWxsPSIjOTk5Ii8+Cjwvc3ZnPgo8L3N2Zz4=";
-              }}
-            />
-            <div className="user-info">
-              <p className="user-name">{profile.displayName || profile.username || "Unknown"}</p>
-              <p className="user-fid">FID: {profile.fid}</p>
-            </div>
-          </>
-        )}
-      </div>
-      
-      <div className="wallet-address">
-        <input type="text" value={address} readOnly onClick={(e) => (e.target as HTMLInputElement).select()} />
-        <a href={basescanUrl} target="_blank" rel="noopener noreferrer" className="basescan-link">
-          View
-        </a>
-      </div>
+    <Card>
+      <CardContent>
+        <Box display="flex" alignItems="center" gap={2} mb={2}>
+          {!profile ? (
+            <>
+              <Avatar sx={{ width: 56, height: 56 }} />
+              <Box>
+                <Typography variant="h6">Loading...</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  FID: -
+                </Typography>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Avatar 
+                src={profile.pfpUrl}
+                sx={{ width: 56, height: 56 }}
+              />
+              <Box>
+                <Typography variant="h6">
+                  {profile.displayName || profile.username || "Unknown"}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  FID: {profile.fid}
+                </Typography>
+              </Box>
+            </>
+          )}
+        </Box>
+        
+        <Box mb={2}>
+          <TextField
+            fullWidth
+            value={address}
+            InputProps={{ 
+              readOnly: true,
+              style: { fontFamily: 'monospace' }
+            }}
+            onClick={(e) => (e.target as HTMLInputElement).select()}
+            variant="outlined"
+            size="small"
+          />
+          <Box display="flex" gap={1} justifyContent="center" mt={1}>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<ContentCopy />}
+              onClick={() => navigator.clipboard.writeText(address)}
+            >
+              Copy
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<OpenInNew />}
+              component={Link}
+              href={basescanUrl}
+              target="_blank"
+            >
+              View
+            </Button>
+          </Box>
+        </Box>
 
-      <div className="balance-section">
-        <label>Balance:</label>
-        <span className="balance">
-          {balance ? `${Number(balance.formatted).toFixed(4)} ${balance.symbol}` : "Loading..."}
-        </span>
-      </div>
-    </div>
+        <Box display="flex" alignItems="center" gap={1}>
+          <Typography variant="body2" color="text.secondary">
+            Balance:
+          </Typography>
+          <Chip 
+            label={balance ? `${Number(balance.formatted).toFixed(4)} ${balance.symbol}` : "Loading..."}
+            color="success"
+            variant="outlined"
+          />
+        </Box>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -132,8 +194,23 @@ function SendCard() {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
+  const [savedAddresses, setSavedAddresses] = useState<string[]>([]);
 
   const { sendTransaction, isPending } = useSendTransaction();
+
+  useEffect(() => {
+    const saved = localStorage.getItem('sentAddresses');
+    if (saved) {
+      setSavedAddresses(JSON.parse(saved));
+    }
+  }, []);
+
+  const saveAddress = (addr: string) => {
+    if (!addr || savedAddresses.includes(addr)) return;
+    const updated = [addr, ...savedAddresses].slice(0, 10);
+    setSavedAddresses(updated);
+    localStorage.setItem('sentAddresses', JSON.stringify(updated));
+  };
 
   if (!address) return null;
 
@@ -157,6 +234,7 @@ function SendCard() {
         value: amountWei,
       });
 
+      saveAddress(recipient);
       setRecipient("");
       setAmount("");
     } catch (err: unknown) {
@@ -165,50 +243,84 @@ function SendCard() {
   };
 
   return (
-    <div className="card">
-      <h3>Send Testnet ETH</h3>
-      
-      <div>
-        <label htmlFor="recipient">Recipient Address:</label>
-        <input
-          id="recipient"
-          type="text"
-          value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
-          placeholder="0x..."
-        />
-      </div>
+    <Card>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          Send Testnet ETH
+        </Typography>
+        
+        <Stack spacing={2}>
+          <Box>
+            <TextField
+              fullWidth
+              label="Recipient Address"
+              value={recipient}
+              onChange={(e) => setRecipient(e.target.value)}
+              placeholder="0x..."
+              variant="outlined"
+              InputProps={{ 
+                style: { fontFamily: 'monospace' }
+              }}
+            />
+            {savedAddresses.length > 0 && (
+              <FormControl fullWidth size="small" sx={{ mt: 1 }}>
+                <InputLabel>Recent Addresses</InputLabel>
+                <Select
+                  value=""
+                  label="Recent Addresses"
+                  onChange={(e) => setRecipient(e.target.value)}
+                  sx={{ fontFamily: 'monospace' }}
+                >
+                  {savedAddresses.map((addr, index) => (
+                    <MenuItem key={index} value={addr} sx={{ fontFamily: 'monospace' }}>
+                      {`${addr.slice(0, 6)}...${addr.slice(-4)}`}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          </Box>
 
-      <div>
-        <label htmlFor="amount">Amount (ETH):</label>
-        <input
-          id="amount"
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="0.001"
-          step="0.001"
-          min="0"
-          max={balance ? balance.formatted : undefined}
-        />
-        {balance && (
-          <span className="balance-info">
-            Available: {Number(balance.formatted).toFixed(4)} ETH
-          </span>
-        )}
-      </div>
+          <Box>
+            <TextField
+              fullWidth
+              label="Amount (ETH)"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="0.001"
+              variant="outlined"
+              inputProps={{
+                step: "0.001",
+                min: "0",
+                max: balance ? balance.formatted : undefined
+              }}
+            />
+            {balance && (
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+                Available: {Number(balance.formatted).toFixed(4)} ETH
+              </Typography>
+            )}
+          </Box>
 
-      {error && <div className="error">{error}</div>}
+          {error && (
+            <Typography color="error" variant="body2" sx={{ p: 1, bgcolor: 'error.light', borderRadius: 1, color: 'error.contrastText' }}>
+              {error}
+            </Typography>
+          )}
 
-      <button 
-        type="button" 
-        className="send-button-full" 
-        onClick={handleSend} 
-        disabled={isPending || !balance || balance.value === 0n}
-      >
-        {isPending ? "Sending..." : "Send"}
-      </button>
-    </div>
+          <Button 
+            variant="contained"
+            size="large"
+            fullWidth
+            onClick={handleSend} 
+            disabled={isPending || !balance || balance.value === 0n}
+          >
+            {isPending ? "Sending..." : "Send"}
+          </Button>
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -217,19 +329,24 @@ function EndpointCard() {
   const [endpoint, setEndpoint] = useState("https://sepolia.base.org");
 
   return (
-    <div className="card">
-      <h3>Sepolia Base Endpoint</h3>
-      <div>
-        <label htmlFor="endpoint">RPC URL:</label>
-        <input
-          id="endpoint"
-          type="text"
+    <Card>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          Sepolia Base Endpoint
+        </Typography>
+        <TextField
+          fullWidth
+          label="RPC URL"
           value={endpoint}
           onChange={(e) => setEndpoint(e.target.value)}
           placeholder="https://sepolia.base.org"
+          variant="outlined"
+          InputProps={{ 
+            style: { fontFamily: 'monospace' }
+          }}
         />
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
 
