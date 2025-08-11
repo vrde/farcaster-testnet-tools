@@ -1,10 +1,21 @@
 import { useDisconnect } from "wagmi";
 import { Stack, Button, Box, Link } from "@mui/material";
+import { sdk } from "@farcaster/frame-sdk";
 import { EndpointCard } from "./EndpointCard";
 import { FaucetCard } from "./FaucetCard";
 
 export function SettingsTab() {
   const { disconnect } = useDisconnect();
+
+  const openProfile = async () => {
+    try {
+      await sdk.actions.openUrl("https://farcaster.xyz/albi.eth");
+    } catch (error) {
+      console.error("Failed to open profile:", error);
+      // Fallback to regular link
+      window.open("https://farcaster.xyz/albi.eth", "_blank");
+    }
+  };
 
   return (
     <Box
@@ -13,6 +24,7 @@ export function SettingsTab() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        padding: 2,
       }}
     >
       <Stack spacing={2} sx={{ flex: 1 }}>
@@ -41,16 +53,18 @@ export function SettingsTab() {
           Disconnect Wallet
         </Button>
 
-        <Box textAlign="center">
+        <Box textAlign="center" sx={{ mb: 2 }}>
           <Link
-            href="https://farcaster.xyz/albi.eth"
-            target="_blank"
-            rel="noopener noreferrer"
+            component="button"
+            onClick={openProfile}
             sx={{
               textDecoration: "none",
               color: "#ff6b00",
               fontSize: "14px",
               fontWeight: "medium",
+              border: "none",
+              background: "none",
+              cursor: "pointer",
               "&:hover": { textDecoration: "underline" },
             }}
           >
