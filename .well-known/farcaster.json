@@ -1,0 +1,19 @@
+{
+  "frame": {
+    "name": "Testnet Tools",
+    "version": "1",
+    "iconUrl": "https://farcaster-testnet-tools.granzotto.net/icon.png",
+    "homeUrl": "https://farcaster-testnet-tools.granzotto.net",
+    "imageUrl": "https://farcaster-testnet-tools.granzotto.net/image.png",
+    "splashImageUrl": "https://farcaster-testnet-tools.granzotto.net/splash.png",
+    "splashBackgroundColor": "#444d61",
+    "subtitle": "Base Sepolia utilities",
+    "description": "Simple tools for interacting with Base Sepolia testnet, check balances, send transactions, and manage your testnet funds easily.",
+    "primaryCategory": "developer-tools"
+  },
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  }
+}
