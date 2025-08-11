@@ -1,14 +1,14 @@
 import React from "react";
-import { Link, LinkProps } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import { sdk } from "@farcaster/frame-sdk";
 
-interface ExternalLinkProps extends Omit<LinkProps, 'href' | 'target' | 'rel'> {
+interface ExternalLinkProps extends Omit<ButtonProps, 'href'> {
   href: string;
   children: React.ReactNode;
 }
 
 export function ExternalLink({ href, children, onClick, ...props }: ExternalLinkProps) {
-  const handleClick = async (event: React.MouseEvent) => {
+  const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     
     // Call custom onClick if provided
@@ -26,21 +26,20 @@ export function ExternalLink({ href, children, onClick, ...props }: ExternalLink
   };
 
   return (
-    <Link
+    <Button
       {...props}
-      component="button"
       onClick={handleClick}
       sx={{
-        border: "none",
-        background: "none",
-        cursor: "pointer",
-        textAlign: "inherit",
-        font: "inherit",
+        minWidth: 0,
         padding: 0,
+        textTransform: "none",
+        textAlign: "inherit",
+        justifyContent: "inherit",
         ...props.sx,
       }}
+      variant="text"
     >
       {children}
-    </Link>
+    </Button>
   );
 }
