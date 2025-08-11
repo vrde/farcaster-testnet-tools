@@ -7,9 +7,9 @@ import {
   CardContent,
   Avatar,
   TextField,
-  Link,
 } from "@mui/material";
 import { ContentCopy, OpenInNew } from "@mui/icons-material";
+import { ExternalLink } from "./ExternalLink";
 
 type UserProfile = {
   fid: number;
@@ -83,16 +83,15 @@ export function UserProfileCard({ profile, address }: UserProfileCardProps) {
             >
               Copy
             </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<OpenInNew />}
-              component={Link}
-              href={basescanUrl}
-              target="_blank"
-            >
-              View
-            </Button>
+            <ExternalLink href={basescanUrl}>
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<OpenInNew />}
+              >
+                View
+              </Button>
+            </ExternalLink>
           </Box>
         </Box>
 
