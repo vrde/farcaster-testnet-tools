@@ -2,23 +2,22 @@ import { sdk } from "@farcaster/frame-sdk";
 import { useEffect, useState } from "react";
 import { parseEther } from "viem";
 import { useAccount, useBalance, useConnect, useSendTransaction } from "wagmi";
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Button, 
-  Card, 
-  CardContent, 
-  Avatar, 
-  TextField, 
-  Select, 
-  MenuItem, 
-  FormControl, 
-  InputLabel, 
-  IconButton,
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  Avatar,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
   Link,
   Stack,
-  Chip
+  Chip,
 } from "@mui/material";
 import { ContentCopy, OpenInNew } from "@mui/icons-material";
 
@@ -28,7 +27,6 @@ type UserProfile = {
   username?: string;
   pfpUrl?: string;
 };
-
 
 function App() {
   useEffect(() => {
@@ -57,10 +55,10 @@ function ConnectMenu() {
   }
 
   return (
-    <Button 
-      variant="contained" 
-      size="large" 
-      fullWidth 
+    <Button
+      variant="contained"
+      size="large"
+      fullWidth
       onClick={() => connect({ connector: connectors[0] })}
       sx={{ py: 2 }}
     >
@@ -95,7 +93,13 @@ function ConnectedView() {
   );
 }
 
-function UserProfileCard({ profile, address }: { profile: UserProfile | null; address: string | undefined }) {
+function UserProfileCard({
+  profile,
+  address,
+}: {
+  profile: UserProfile | null;
+  address: string | undefined;
+}) {
   const { data: balance } = useBalance({
     address: address as `0x${string}`,
   });
@@ -120,10 +124,7 @@ function UserProfileCard({ profile, address }: { profile: UserProfile | null; ad
             </>
           ) : (
             <>
-              <Avatar 
-                src={profile.pfpUrl}
-                sx={{ width: 56, height: 56 }}
-              />
+              <Avatar src={profile.pfpUrl} sx={{ width: 56, height: 56 }} />
               <Box>
                 <Typography variant="h6">
                   {profile.displayName || profile.username || "Unknown"}
@@ -135,14 +136,14 @@ function UserProfileCard({ profile, address }: { profile: UserProfile | null; ad
             </>
           )}
         </Box>
-        
+
         <Box mb={2}>
           <TextField
             fullWidth
             value={address}
-            InputProps={{ 
+            InputProps={{
               readOnly: true,
-              style: { fontFamily: 'monospace' }
+              style: { fontFamily: "monospace" },
             }}
             onClick={(e) => (e.target as HTMLInputElement).select()}
             variant="outlined"
@@ -174,8 +175,12 @@ function UserProfileCard({ profile, address }: { profile: UserProfile | null; ad
           <Typography variant="body2" color="text.secondary">
             Balance:
           </Typography>
-          <Chip 
-            label={balance ? `${Number(balance.formatted).toFixed(4)} ${balance.symbol}` : "Loading..."}
+          <Chip
+            label={
+              balance
+                ? `${Number(balance.formatted).toFixed(4)} ${balance.symbol}`
+                : "Loading..."
+            }
             color="success"
             variant="outlined"
           />
@@ -199,7 +204,7 @@ function SendCard() {
   const { sendTransaction, isPending } = useSendTransaction();
 
   useEffect(() => {
-    const saved = localStorage.getItem('sentAddresses');
+    const saved = localStorage.getItem("sentAddresses");
     if (saved) {
       setSavedAddresses(JSON.parse(saved));
     }
@@ -209,7 +214,7 @@ function SendCard() {
     if (!addr || savedAddresses.includes(addr)) return;
     const updated = [addr, ...savedAddresses].slice(0, 10);
     setSavedAddresses(updated);
-    localStorage.setItem('sentAddresses', JSON.stringify(updated));
+    localStorage.setItem("sentAddresses", JSON.stringify(updated));
   };
 
   if (!address) return null;
@@ -248,7 +253,7 @@ function SendCard() {
         <Typography variant="h6" gutterBottom>
           Send Testnet ETH
         </Typography>
-        
+
         <Stack spacing={2}>
           <Box>
             <TextField
@@ -258,8 +263,8 @@ function SendCard() {
               onChange={(e) => setRecipient(e.target.value)}
               placeholder="0x..."
               variant="outlined"
-              InputProps={{ 
-                style: { fontFamily: 'monospace' }
+              InputProps={{
+                style: { fontFamily: "monospace" },
               }}
             />
             {savedAddresses.length > 0 && (
@@ -269,10 +274,14 @@ function SendCard() {
                   value=""
                   label="Recent Addresses"
                   onChange={(e) => setRecipient(e.target.value)}
-                  sx={{ fontFamily: 'monospace' }}
+                  sx={{ fontFamily: "monospace" }}
                 >
                   {savedAddresses.map((addr, index) => (
-                    <MenuItem key={index} value={addr} sx={{ fontFamily: 'monospace' }}>
+                    <MenuItem
+                      key={index}
+                      value={addr}
+                      sx={{ fontFamily: "monospace" }}
+                    >
                       {`${addr.slice(0, 6)}...${addr.slice(-4)}`}
                     </MenuItem>
                   ))}
@@ -293,27 +302,40 @@ function SendCard() {
               inputProps={{
                 step: "0.001",
                 min: "0",
-                max: balance ? balance.formatted : undefined
+                max: balance ? balance.formatted : undefined,
               }}
             />
             {balance && (
-              <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ mt: 0.5, display: "block" }}
+              >
                 Available: {Number(balance.formatted).toFixed(4)} ETH
               </Typography>
             )}
           </Box>
 
           {error && (
-            <Typography color="error" variant="body2" sx={{ p: 1, bgcolor: 'error.light', borderRadius: 1, color: 'error.contrastText' }}>
+            <Typography
+              color="error"
+              variant="body2"
+              sx={{
+                p: 1,
+                bgcolor: "error.light",
+                borderRadius: 1,
+                color: "error.contrastText",
+              }}
+            >
               {error}
             </Typography>
           )}
 
-          <Button 
+          <Button
             variant="contained"
             size="large"
             fullWidth
-            onClick={handleSend} 
+            onClick={handleSend}
             disabled={isPending || !balance || balance.value === 0n}
           >
             {isPending ? "Sending..." : "Send"}
@@ -323,7 +345,6 @@ function SendCard() {
     </Card>
   );
 }
-
 
 function EndpointCard() {
   const [endpoint, setEndpoint] = useState("https://sepolia.base.org");
@@ -341,8 +362,8 @@ function EndpointCard() {
           onChange={(e) => setEndpoint(e.target.value)}
           placeholder="https://sepolia.base.org"
           variant="outlined"
-          InputProps={{ 
-            style: { fontFamily: 'monospace' }
+          InputProps={{
+            style: { fontFamily: "monospace" },
           }}
         />
       </CardContent>
