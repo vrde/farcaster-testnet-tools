@@ -12,8 +12,8 @@
     "primaryCategory": "developer-tools"
   },
   "accountAssociation": {
-    "header": "",
-    "payload": "",
-    "signature": ""
+    "header": "eyJmaWQiOjg4NzAwNCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDYyNDIxNmRBNzNDQjQ5QTJiMjdDMzUxYTAwYjBBOThkN0ExREIwNTAifQ",
+    "payload": "eyJkb21haW4iOiJmYXJjYXN0ZXItdGVzdG5ldC10b29scy5ncmFuem90dG8ubmV0In0",
+    "signature": "MHhiMTBjMDY5MTRjOTgyM2MwYmNmNzU0OTA1ZDcwN2VjNGUzOTBjZDRlNTBlNjY0ZjRiM2Q3OTBiNWVmMzRjYmJmMmZiZWJiMWExZDM3YzI3YmJjNTMwN2E2NmYyMGI5YjY5MjVhMzY4YmU4YmZkMzYxOGQxOGRlZmVkN2EwMGZhNTFj"
   }
 }
