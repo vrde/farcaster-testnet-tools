@@ -58,3 +58,4 @@ npm run tunnel
 - Supports Base and Mainnet chains
 - Uses Farcaster Frame connector for wallet integration
 - No test networks configured (despite project name mentioning "testnet")
+- we use bun :)
