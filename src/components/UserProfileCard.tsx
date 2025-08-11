@@ -34,7 +34,7 @@ export function UserProfileCard({ profile, address }: UserProfileCardProps) {
 
   return (
     <Card>
-      <CardContent>
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
         <Box display="flex" alignItems="center" gap={2} mb={2}>
           {!profile ? (
             <>

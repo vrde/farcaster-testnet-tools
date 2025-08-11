@@ -11,8 +11,10 @@ import {
   Stack,
   Menu,
   MenuItem,
+  Link,
+  Alert,
 } from "@mui/material";
-import { Contacts } from "@mui/icons-material";
+import { Contacts, OpenInNew } from "@mui/icons-material";
 
 export function SendCard() {
   const { address } = useAccount();
@@ -23,10 +25,22 @@ export function SendCard() {
   const [recipient, setRecipient] = useState("");
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
+  const [successTxHash, setSuccessTxHash] = useState("");
   const [savedAddresses, setSavedAddresses] = useState<string[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const { sendTransaction, isPending } = useSendTransaction();
+  const { sendTransaction, isPending } = useSendTransaction({
+    mutation: {
+      onSuccess: (hash) => {
+        setSuccessTxHash(hash);
+        setError("");
+      },
+      onError: (err) => {
+        setError(err.message);
+        setSuccessTxHash("");
+      },
+    },
+  });
 
   useEffect(() => {
     const saved = localStorage.getItem("sentAddresses");
@@ -47,6 +61,7 @@ export function SendCard() {
   const handleSend = async () => {
     try {
       setError("");
+      setSuccessTxHash("");
 
       if (!recipient || !amount) {
         setError("Please fill in all fields");
@@ -72,9 +87,13 @@ export function SendCard() {
     }
   };
 
+  const getBlockExplorerUrl = (txHash: string) => {
+    return `https://sepolia.basescan.org/tx/${txHash}`;
+  };
+
   return (
     <Card>
-      <CardContent>
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
         <Typography variant="h6" gutterBottom>
           Send Testnet ETH
         </Typography>
@@ -142,18 +161,35 @@ export function SendCard() {
           </Box>
 
           {error && (
-            <Typography
-              color="error"
-              variant="body2"
-              sx={{
-                p: 1,
-                bgcolor: "error.light",
-                borderRadius: 1,
-                color: "error.contrastText",
-              }}
-            >
+            <Alert severity="error" variant="filled">
               {error}
-            </Typography>
+            </Alert>
+          )}
+
+          {successTxHash && (
+            <Alert
+              severity="success"
+              variant="filled"
+              action={
+                <Link
+                  href={getBlockExplorerUrl(successTxHash)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  sx={{
+                    color: "success.contrastText",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                    textDecoration: "none",
+                    "&:hover": { textDecoration: "underline" },
+                  }}
+                >
+                  <OpenInNew fontSize="small" />
+                </Link>
+              }
+            >
+              Transaction sent successfully!
+            </Alert>
           )}
 
           <Button

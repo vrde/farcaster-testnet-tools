@@ -10,7 +10,7 @@ import { OpenInNew } from "@mui/icons-material";
 export function FaucetCard() {
   return (
     <Card>
-      <CardContent>
+      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
         <Typography variant="h6" gutterBottom>
           Need Test ETH?
         </Typography>
