@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "lint": "biome check src",
     "preview": "vite preview",
-    "tunnel": "ssh -N -R 6000:localhost:5173 tunnel@dev.granzotto.net"
+    "tunnel": "ssh -N -R 6000:localhost:5173 tunnel@dev.granzotto.net",
+    "predeploy": "bun run build",
+    "deploy": "gh-pages -d dist --dotfiles"
   },
   "dependencies": {
     "@farcaster/frame-sdk": "latest",
@@ -26,6 +28,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@wagmi/cli": "latest",
+    "gh-pages": "^6.3.0",
     "typescript": "^5.8.3",
     "vite": "^5.2.11"
   }
