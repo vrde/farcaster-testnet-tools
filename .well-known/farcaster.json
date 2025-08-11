@@ -6,7 +6,7 @@
     "homeUrl": "https://farcaster-testnet-tools.granzotto.net",
     "imageUrl": "https://farcaster-testnet-tools.granzotto.net/icon.png",
     "splashImageUrl": "https://farcaster-testnet-tools.granzotto.net/icon.png",
-    "splashBackgroundColor": "#444d61",
+    "splashBackgroundColor": "#2563eb",
     "subtitle": "Base Sepolia utilities",
     "description": "Simple tools for interacting with Base Sepolia testnet, check balances, send transactions, and manage your testnet funds easily.",
     "primaryCategory": "developer-tools"
